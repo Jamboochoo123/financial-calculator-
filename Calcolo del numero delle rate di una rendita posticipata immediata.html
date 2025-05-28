@@ -1,0 +1,87 @@
+<html>
+<head>
+  <title> Calcolo del numero della rendita posticipata immediata </title>
+</head>
+<body>
+<form name="Dati iniziali">
+  <fieldset>
+<legend>Dati iniziali</legend>
+Importo finanziamento:
+<input type="text" name="A" id="A" style="text-align:right;"> € <br><br>
+Importo rata:
+<input type="text" name="rata" id="rata" style="text-align:right;"> € <br><br>
+Tasso (T.A.E.G.):
+<input type="text" name="tasso" id="tasso" style="text-align:right;"> % <br><br>
+Periodicità dei pagamenti:
+<select id="periodo">
+  <option value="12">Mensile</option>
+  <option value="4">Trimestrale</option>
+  <option value="2">Semestrale</option>
+  <option value="1">Annuale</option>
+</select>
+<br>
+<br>
+<button type="button" onclick="Calcola()"> Calcola </button>
+<button type="reset"> Reset </button>
+  </fieldset>
+</form>
+
+<p id="output_n"></p>
+<p id="output_opzione1"></p>
+<p id="output_opzione2"></p>
+
+<script>
+    \end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+    \frametitle{Script in Javascript (codice - Parte 2)}
+    \begin{verbatim}
+function Calcola()
+{
+    var A = parseFloat(document.getElementById("A").value.replace(',', '.'));
+    var R = parseFloat(document.getElementById("rata").value.replace(',', '.'));
+    var r = parseFloat(document.getElementById("tasso").value.replace(',', '.'));
+    var periodo = parseInt(document.getElementById("periodo").value);
+    
+    if (periodo == 1)
+{
+      var  i = r / 100;
+    }
+else
+    {
+      i = Math.pow(1 + r / 100, 1 / periodo) - 1;
+    }
+
+    var n = -Math.log(1 - A * i / R) / Math.log(1 + i);
+var n1 = n - (n % periodo);
+var n2 = n1+periodo;
+var afiguno = (1-Math.pow(1+i,-n1))/(i);
+var afigdue = (1-Math.pow(1+i,-n2))/(i);
+var erreuno = A/afiguno;
+var erredue = A/afigdue;
+
+document.getElementById("output_n").innerHTML = 
+"Numero di rate: " + n.toFixed(3);
+
+if (n1/periodo == 1)
+{document.getElementById("output_opzione1").innerHTML = 
+"Prima opzione: finanziamento a "+n1/periodo+" anno ("+ n1+" rate) 
+dell'importo pari a "+ erreuno.toFixed(2)+" € ciascuna";
+}
+else
+{
+document.getElementById("output_opzione1").innerHTML = 
+"Prima opzione: 
+finanziamento a "+n1/periodo+" anni ("+ n1+" rate)
+dell'importo pari a "+ erreuno.toFixed(2)+" € ciascuna";
+}
+document.getElementById("output_opzione2").innerHTML =
+"Seconda opzione: finanziamento a "+n2/periodo+" anni (" + n2+" rate) 
+dell'importo pari a "+ erredue.toFixed(2)+" € ciascuna";
+
+
+}
+</script>
+</body>
+</html>
